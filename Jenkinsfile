@@ -16,4 +16,4 @@
 
 //Jenkins integration.
 // See https://github.softwareag.com/Terracotta/jenkins-pipeline-shared-library/blob/main/vars/mavenBuild.groovy
-mavenBuild.autoRelease increment_pom_version_digit: -1 // increment last digit after release
+mavenBuild.autoRelease increment_pom_version_digit: -1, increment_release_version_digit: -1 // increment last digit for release and after release 
