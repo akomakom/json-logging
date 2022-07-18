@@ -25,6 +25,19 @@
             <artifactId>logback-jackson</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+        <!--
+            This declaration is there to fix a bug in logback's parent pom where they force
+            `jackson-databind` as a provided dependency, so their json logging plugin, which
+            directly depends on `jackson-databind`, does not bring `jackson-databind` anymore.
+        -->
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>

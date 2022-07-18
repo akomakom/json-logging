@@ -8,18 +8,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.terracotta.forge</groupId>
-        <artifactId>forge-parent</artifactId>
-        <version>5.7</version>
+        <groupId>org.terracotta</groupId>
+        <artifactId>terracotta-parent</artifactId>
+        <version>5.21</version>
     </parent>
-    <modules>
-        <module>json-layout</module>
-    </modules>
 
     <groupId>com.terracottatech.cloud</groupId>
     <artifactId>json-logging</artifactId>
     <version>1.2-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+    <modules>
+        <module>json-layout</module>
+    </modules>
 
     <properties>
         <slf4j.base.version>1.7.32</slf4j.base.version>
@@ -54,11 +55,31 @@
                 <groupId>ch.qos.logback.contrib</groupId>
                 <artifactId>logback-json-classic</artifactId>
                 <version>0.1.5</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>logback-classic</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>logback-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback.contrib</groupId>
                 <artifactId>logback-jackson</artifactId>
                 <version>0.1.5</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>logback-classic</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>logback-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -71,6 +92,19 @@
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>1.6.8</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <!-- The Base URL of Nexus instance where we want to stage -->
+                        <nexusUrl>http://nexus.terracotta.eur.ad.sag</nexusUrl>
+                        <!-- The server "id" element from settings to use authentication from -->
+                        <serverId>terracotta-nexus-staging</serverId>
+                        <skipNexusStagingDeployMojo>${maven.deploy.skip}</skipNexusStagingDeployMojo>
+                    </configuration>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -102,12 +136,19 @@
                         </archive>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>com.mycila</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <configuration>
+                        <inlineHeader><![CDATA[
+Copyright (c) 2022-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
+                ]]></inlineHeader>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
+
     </build>
-    <scm>
-        <connection>scm:git:git@github.softwareag.com:Terracotta/json-logging.git</connection>
-        <developerConnection>scm:git:https://github.softwareag.com/Terracotta/json-logging.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+
 </project>
