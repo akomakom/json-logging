@@ -5,6 +5,7 @@
 package com.terracottatech.cloud.logging.json;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.contrib.jackson.JacksonJsonFormatter;
 import ch.qos.logback.contrib.json.classic.JsonLayout;
 
 import java.time.ZoneId;
@@ -16,6 +17,12 @@ public class TerracottaJsonLayout extends JsonLayout {
 
   private String file;
   private String product;
+
+  public TerracottaJsonLayout() {
+    // 1 log line per line
+    setAppendLineSeparator(true);
+    setJsonFormatter(new JacksonJsonFormatter());
+  }
 
   @Override
   public void start() {
