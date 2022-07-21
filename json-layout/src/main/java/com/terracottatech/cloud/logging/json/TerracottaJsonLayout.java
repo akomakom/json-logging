@@ -17,16 +17,6 @@ public class TerracottaJsonLayout extends JsonLayout {
   private String file;
   private String product;
 
-  public TerracottaJsonLayout() {
-    // ISO_OFFSET_DATE_TIME
-    setTimestampFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-    if (Boolean.getBoolean("terracotta.cloud.logging.utc") || "true".equals(System.getenv("JSON_LOGGING_UTC"))) {
-      setTimestampFormatTimezoneId("UTC");
-    } else {
-      setTimestampFormatTimezoneId(ZoneId.systemDefault().getId());
-    }
-  }
-
   @Override
   public void start() {
     validate();
@@ -36,8 +26,21 @@ public class TerracottaJsonLayout extends JsonLayout {
   private void validate() {
     Objects.requireNonNull(getFile());
     Objects.requireNonNull(getProduct());
-    Objects.requireNonNull(getTimestampFormat());
-    Objects.requireNonNull(getTimestampFormatTimezoneId());
+
+    // If TZ not set
+    if (getTimestampFormatTimezoneId() == null) {
+      if (Boolean.getBoolean("terracotta.cloud.logging.utc") || "true".equals(System.getenv("JSON_LOGGING_UTC"))) {
+        setTimestampFormatTimezoneId("UTC");
+      } else {
+        setTimestampFormatTimezoneId(ZoneId.systemDefault().getId());
+      }
+    }
+
+    // If format not set
+    if (getTimestampFormat() == null) {
+      // ISO_OFFSET_DATE_TIME
+      setTimestampFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+    }
   }
 
   @Override
