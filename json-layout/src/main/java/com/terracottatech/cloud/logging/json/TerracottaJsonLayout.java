@@ -7,6 +7,7 @@ package com.terracottatech.cloud.logging.json;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.contrib.json.classic.JsonLayout;
 
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -16,6 +17,16 @@ public class TerracottaJsonLayout extends JsonLayout {
   private String file;
   private String product;
 
+  public TerracottaJsonLayout() {
+    // ISO_OFFSET_DATE_TIME
+    setTimestampFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+    if (Boolean.getBoolean("terracotta.cloud.logging.utc") || "true".equals(System.getenv("JSON_LOGGING_UTC"))) {
+      setTimestampFormatTimezoneId("UTC");
+    } else {
+      setTimestampFormatTimezoneId(ZoneId.systemDefault().getId());
+    }
+  }
+
   @Override
   public void start() {
     validate();
@@ -23,13 +34,15 @@ public class TerracottaJsonLayout extends JsonLayout {
   }
 
   private void validate() {
-    Objects.requireNonNull(file);
-    Objects.requireNonNull(product);
+    Objects.requireNonNull(getFile());
+    Objects.requireNonNull(getProduct());
+    Objects.requireNonNull(getTimestampFormat());
+    Objects.requireNonNull(getTimestampFormatTimezoneId());
   }
 
   @Override
   protected void addCustomDataToJsonMap(Map<String, Object> map, ILoggingEvent logEvent) {
-    if(logEvent.getMarker() != null) {
+    if (logEvent.getMarker() != null) {
       // only log top marker, no child
       map.put("marker", logEvent.getMarker().getName());
     }
