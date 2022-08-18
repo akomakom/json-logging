@@ -11,6 +11,7 @@
         <groupId>com.terracottatech.cloud</groupId>
         <artifactId>json-logging</artifactId>
         <version>1.2-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>json-layout</artifactId>
@@ -21,10 +22,6 @@
             <artifactId>logback-json-classic</artifactId>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback.contrib</groupId>
-            <artifactId>logback-jackson</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
@@ -32,14 +29,24 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
-        <!--
-            This declaration is there to fix a bug in logback's parent pom where they force
-            `jackson-databind` as a provided dependency, so their json logging plugin, which
-            directly depends on `jackson-databind`, does not bring `jackson-databind` anymore.
-        -->
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
+            <version>2.13.2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback.contrib</groupId>
+            <artifactId>logback-jackson</artifactId>
+            <version>0.1.5</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

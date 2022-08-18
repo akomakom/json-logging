@@ -5,7 +5,6 @@
 package com.terracottatech.cloud.logging.json;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.contrib.jackson.JacksonJsonFormatter;
 import ch.qos.logback.contrib.json.classic.JsonLayout;
 
 import java.time.ZoneId;
@@ -21,7 +20,7 @@ public class TerracottaJsonLayout extends JsonLayout {
   public TerracottaJsonLayout() {
     // 1 log line per line
     setAppendLineSeparator(true);
-    setJsonFormatter(new JacksonJsonFormatter());
+    setJsonFormatter(new TerracottaJsonFormatter());
   }
 
   @Override
@@ -54,40 +53,40 @@ public class TerracottaJsonLayout extends JsonLayout {
   protected void addCustomDataToJsonMap(Map<String, Object> map, ILoggingEvent logEvent) {
     if (logEvent.getMarker() != null) {
       // only log top marker, no child
-      map.put("marker", logEvent.getMarker().getName());
+      map.put(Key.MARKER, logEvent.getMarker().getName());
     }
 
     String accid = System.getProperty("terracotta.cloud.logging.accid");
     if (accid != null) {
-      map.put("accid", accid);
+      map.put(Key.ACCID, accid);
     }
 
     String envname = System.getProperty("terracotta.cloud.logging.envname");
     if (envname != null) {
-      map.put("envname", envname);
+      map.put(Key.ENVNAME, envname);
     }
 
-    map.put("file", getFile());
+    map.put(Key.FILE, getFile());
 
     Map<String, String> ctx = new HashMap<>();
 
-    ctx.put("product", getProduct());
+    ctx.put(Key.PRODUCT, getProduct());
 
     String node = System.getProperty("terracotta.cloud.logging.node");
     if (node != null) {
-      ctx.put("node", node);
+      ctx.put(Key.NODE, node);
     }
 
     String stripe = System.getProperty("terracotta.cloud.logging.stripe");
     if (stripe != null) {
-      ctx.put("stripe", stripe);
+      ctx.put(Key.STRIPE, stripe);
     }
 
     String cluster = System.getProperty("terracotta.cloud.logging.cluster");
     if (cluster != null) {
-      ctx.put("cluster", cluster);
+      ctx.put(Key.CLUSTER, cluster);
     }
-    map.put("id", ctx);
+    map.put(Key.ID, ctx);
   }
 
   private String getFile() {
