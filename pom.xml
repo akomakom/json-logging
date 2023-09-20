@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2011-2020 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
-  ~ Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
-  -->
 
+    Copyright (c) 2022-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,10 +25,11 @@
         <version>5.21</version>
     </parent>
 
-    <groupId>com.terracottatech.cloud</groupId>
+    <groupId>org.terracotta</groupId>
     <artifactId>json-logging</artifactId>
     <version>1.2-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <inceptionYear>2022</inceptionYear>
 
     <modules>
         <module>json-layout</module>
@@ -119,16 +132,55 @@
                 <plugin>
                     <groupId>com.mycila</groupId>
                     <artifactId>license-maven-plugin</artifactId>
+                    <version>4.2</version>
                     <configuration>
                         <inlineHeader><![CDATA[
-Copyright (c) 2022-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
-Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
+Copyright (c) ${license.git.copyrightExistenceYears} Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
                 ]]></inlineHeader>
+                    <excludes>
+                        <exclude>**/src/test/resources/**</exclude>
+                        <exclude>**/src/main/resources/**</exclude>
+                        <exclude>**/.idea/**</exclude>
+                        <exclude>**/nbproject/**</exclude>
+                        <exclude>Jenkinsfile*</exclude>
+                        <exclude>.m2/**</exclude>
+                    </excludes>
                     </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.mycila</groupId>
+                            <artifactId>license-maven-plugin-git</artifactId>
+                            <!-- make sure you use the same version as license-maven-plugin -->
+                            <version>4.2</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
             </plugins>
         </pluginManagement>
 
     </build>
+
+    <repositories>
+        <!-- required to resolve parent pom -->
+        <repository>
+            <id>terracotta-releases</id>
+            <url>https://repo.terracotta.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 </project>
